@@ -17,13 +17,7 @@ namespace Scrape.Controllers
       //[HttpPost] or GET 'default': services
       public IActionResult Index()
       {
-         //if (ModelState.IsValid)
-         //{
-            string Url = "http://www.b3.com.br/pt_br/solucoes/plataformas/puma-trading-system/para-participantes-e-traders/calendario-de-negociacao/feriados/";
-            //ViewBag.Msg2 = _service.bList1(Url);
-            //return RedirectToAction("Listar");
-         //}
-         //var calenderService = _service.BuscarHtml();
+         
          return View();
       }
 
