@@ -1,58 +1,42 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace Scrape.Models
 {
    public class CalenderService
    {
-      public Calender calender { get; set; }
-
-      public List<Calender> BuscarHtml()
-      {
-         List<Calender> _callService = new List<Calender>();
-         var cliente = new WebClient();
-         string page = cliente.DownloadString("http://www.b3.com.br/pt_br/solucoes/plataformas/puma-trading-system/para-participantes-e-traders/calendario-de-negociacao/feriados/");
-
-         var htmlDoc = new HtmlAgilityPack.HtmlDocument();
-         htmlDoc.LoadHtml(page);
-         //variaveis temporarias
-         string test = string.Empty;
-         foreach (HtmlNode item in htmlDoc.GetElementbyId("panel1a").ChildNodes)
-         {
-            if (item.Attributes.Count > 0)
-            {
-               test = item.Attributes["tr"].Value;
-               calender.Descricao = test;
-               _callService.Add(calender);
-
-            }
-         }
-         return _callService;
-      }
-      //FIM METODO
-
+      //Serviço de solicitação do scraping - carregamento e captura dos elementos HTML 
       public List<CalenderMes> Scraping(string url, List<CalenderMes> calenderMes)
       {
-         HtmlWeb cliente = new HtmlWeb();
-         var htmlDoc = new HtmlAgilityPack.HtmlDocument();
-         htmlDoc = cliente.Load(url);
-
-         var pagina = htmlDoc.DocumentNode.SelectSingleNode("//div[@class='large-12 columns']/ul[@class='accordion']");
-         HtmlNode node = null;
-
-         foreach (var aux in pagina.SelectNodes("li[@class='accordion-navigation']"))
+         //Tentar carregar e capturar a pagina,
+         //Bem como o manejo da lógica de captura.
+         try
          {
-            node = aux;
-            calenderMes = imprimeScrape(node, calenderMes);
+            HtmlWeb cliente = new HtmlWeb();
+            var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+            htmlDoc = cliente.Load(url);
+
+            var pagina = htmlDoc.DocumentNode.SelectSingleNode("//div[@class='large-12 columns']/ul[@class='accordion']");
+            HtmlNode node = null;
+
+            foreach (var aux in pagina.SelectNodes("li[@class='accordion-navigation']"))
+            {
+               node = aux;
+               calenderMes = imprimeScrape(node, calenderMes);
+            }
+            return calenderMes;
          }
-         return calenderMes;
+         catch (Exception e)
+         {
+            
+            throw new Exception(e.Message);
+         }
       }
       //FIM metodo
 
+      //Serviço de lógica de preenchimento das listas/Models
       public List<CalenderMes> imprimeScrape(HtmlNode node, List<CalenderMes> calenderMes)
       {
          int k = 0;
@@ -67,16 +51,16 @@ namespace Scrape.Models
                   switch (k)
                   {
                      case 0:
-                        strReg[k] = nos.InnerText;
+                        strReg[k] = WebUtility.HtmlDecode(nos.InnerText);
                         break;
                      case 1:
-                        strReg[k] = nos.InnerText;
+                        strReg[k] = WebUtility.HtmlDecode(nos.InnerText);
                         break;
                      case 2:
-                        strReg[k] = nos.InnerText;
+                        strReg[k] = WebUtility.HtmlDecode(nos.InnerText);
                         break;
                      case 3:
-                        strReg[k] = nos.InnerText;
+                        strReg[k] = WebUtility.HtmlDecode(nos.InnerText);
                         break;
                   }
                   k++;
@@ -90,5 +74,6 @@ namespace Scrape.Models
          }
          return calenderMes;
       }
+      //FIM metodo
    }
 }
