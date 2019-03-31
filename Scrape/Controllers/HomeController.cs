@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Scrape.Models;
@@ -27,6 +24,7 @@ namespace Scrape.Controllers
          return View();
       }
 
+      //'View' EntrarDados(url)
       [HttpPost]
       public IActionResult EntrarDados(Address address)
       {
@@ -37,6 +35,7 @@ namespace Scrape.Controllers
          return View();
       }
 
+      //Listagem indireta sem entrada de dados : URL
       public IActionResult Listar()
       {
          string url = "http://www.b3.com.br/pt_br/solucoes/plataformas/puma-trading-system/para-participantes-e-traders/calendario-de-negociacao/feriados/";
@@ -45,7 +44,7 @@ namespace Scrape.Controllers
          return View(list);
       }
 
-
+      //Listagem direta com entrada de dados via a 'View' EntrarDados(url) : URL
       public IActionResult Consulta(Address address)
       {
          List<CalenderMes> list = new List<CalenderMes>();
