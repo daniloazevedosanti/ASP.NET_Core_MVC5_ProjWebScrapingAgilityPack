@@ -37,7 +37,6 @@ namespace Scrape.Models
 
       public List<CalenderMes> Scraping(string url, List<CalenderMes> calenderMes)
       {
-         //string url = "http://www.b3.com.br/pt_br/solucoes/plataformas/puma-trading-system/para-participantes-e-traders/calendario-de-negociacao/feriados/";
          HtmlWeb cliente = new HtmlWeb();
          var htmlDoc = new HtmlAgilityPack.HtmlDocument();
          htmlDoc = cliente.Load(url);
@@ -47,7 +46,6 @@ namespace Scrape.Models
 
          foreach (var aux in pagina.SelectNodes("li[@class='accordion-navigation']"))
          {
-            //str = "###" + aux.OuterHtml;
             node = aux;
             calenderMes = imprimeScrape(node, calenderMes);
          }
