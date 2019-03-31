@@ -1,8 +1,61 @@
-###############################################################################
+##############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
+*.cs     diff=csharp
+*.cshtml diff=csharp
 
+*.sln        text eol=crlf
+*.csproj     text eol=crlf
+*.vbproj     text eol=crlf
+*.vcxproj    text eol=crlf
+*.vcproj     text eol=crlf
+*.dbproj     text eol=crlf
+*.fsproj     text eol=crlf
+*.lsproj     text eol=crlf
+*.wixproj    text eol=crlf
+*.modelproj  text eol=crlf
+*.sqlproj    text eol=crlf
+*.wmaproj    text eol=crlf
+
+*.xproj      text eol=crlf
+*.props      text eol=crlf
+*.filters    text eol=crlf
+*.vcxitems   text eol=crlf
+
+*.css           text eol=crlf
+*.df            text eol=crlf
+*.htm           text eol=crlf
+*.html          text eol=crlf
+*.java          text eol=crlf
+*.js            text eol=crlf
+*.json          text eol=crlf
+*.jsp           text eol=crlf
+*.jspf          text eol=crlf
+*.jspx          text eol=crlf
+*.properties    text eol=crlf
+*.sh            text eol=crlf
+*.tld           text eol=crlf
+*.txt           text eol=crlf
+*.tag           text eol=crlf
+*.tagx          text eol=crlf
+*.xml           text eol=crlf
+*.yml           text eol=crlf
+
+Scrape/*.html linguist-vendored
+Scrape/Views/* linguist-vendored
+Scrape/Views/Home/* linguist-vendored
+Scrape/Views/Shared/* linguist-vendored
+Scrape/wwwroot/* linguist-vendored
+Scrape/wwwroot/css/* linguist-vendored
+Scrape/wwwroot/images/* linguist-vendored
+Scrape/wwwroot/js/* linguist-vendored
+Scrape/wwwroot/lib/* linguist-vendored
+
+*.cshtml linguist-language=csharp
+
+#jquery.js linguist-vendored=true
+#
 ###############################################################################
 # Set default behavior for command prompt diff.
 #
