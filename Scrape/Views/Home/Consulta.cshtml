@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Scrape.Models.CalenderMes>
+﻿@model IEnumerable<Scrape.Models.Calender>
 
 @{
     ViewData["Title"] = "";
@@ -10,7 +10,7 @@
         {
             <tr>
                 <td align="justify">
-                    @Html.DisplayFor(modelItem => item.SJson)
+                    @Html.DisplayFor(modelItem => item.FormatJson)
                 </td>
             </tr>
         }

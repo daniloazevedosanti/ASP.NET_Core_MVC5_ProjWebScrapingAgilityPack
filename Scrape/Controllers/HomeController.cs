@@ -8,14 +8,11 @@ namespace Scrape.Controllers
 {
    public class HomeController : Controller
    {
-
       private readonly CalenderService _service = new CalenderService();
-      // private readonly Address address = new Address();
 
       //[HttpPost] or GET 'default': services
       public IActionResult Index()
       {
-
          return View();
       }
 
@@ -39,16 +36,16 @@ namespace Scrape.Controllers
       public IActionResult Listar()
       {
          string url = "http://www.b3.com.br/pt_br/solucoes/plataformas/puma-trading-system/para-participantes-e-traders/calendario-de-negociacao/feriados/";
-         List<CalenderMes> list = new List<CalenderMes>();
-         list = _service.Scraping(url, list);
+         List<Calender> list = new List<Calender>();
+         list = _service.DoScraping(url, list);
          return View(list);
       }
 
       //Listagem direta com entrada de dados via a 'View' EntrarDados(url) : URL
       public IActionResult Consulta(Address address)
       {
-         List<CalenderMes> list = new List<CalenderMes>();
-         list = _service.Scraping(address.Url, list);
+         List<Calender> list = new List<Calender>();
+         list = _service.DoScraping(address.Url, list);
          return View(list);
       }
 

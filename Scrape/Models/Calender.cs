@@ -1,24 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HtmlAgilityPack;
+using System.Net;
 
 namespace Scrape.Models
 {
    public class Calender
    {
-      //public string Mes { get; set; }
-      public string Dia { get; set; }
-      public string Evento { get; set; }
-      public string Descricao { get; set; }
-      public string Totals { get; set; }
+      public string Mes { get; set; }
+      public string FormatJson { get; set; }
+      public HtmlNode[] Propriedades { get; set; } = new HtmlNode[4];
 
-      //{"mes":"janeiro", "dia":"01","evento":"","descricao":""}
-      public override string ToString()
+      public Calender(string mes, HtmlNode[] propriedades)
       {
-         return  "\"dia\"" + ":\"" + this.Dia + "\"," + "\"evento\":\"" + this.Evento
-             + "\"," + "\"descricao\":\"" + this.Descricao + "\"}";
+         Mes = mes;
+         Propriedades = propriedades;
       }
 
+      public override string ToString()
+      {
+         return "{" + "\"mes\"" + ":\"" + Mes + "\","
+            + "\"dia\"" + ":\"" + WebUtility.HtmlDecode(Propriedades[0].InnerText)
+            + "\"," + "\"evento\":\"" + WebUtility.HtmlDecode(Propriedades[1].InnerText)
+            + "\"," + "\"descricao\":\"" + WebUtility.HtmlDecode(Propriedades[3].InnerText) + "\"}";
+      }
    }
 }

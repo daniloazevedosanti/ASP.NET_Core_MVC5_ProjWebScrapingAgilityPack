@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace Scrape.Models
@@ -8,72 +9,50 @@ namespace Scrape.Models
    public class CalenderService
    {
       //Serviço de solicitação do scraping - carregamento e captura dos elementos HTML 
-      public List<CalenderMes> Scraping(string url, List<CalenderMes> calenderMes)
+      public List<Calender> DoScraping(string url, List<Calender> calenderMes)
       {
-         //Tentar carregar e capturar a pagina,
-         //Bem como o manejo da lógica de captura.
+         //Carregamento e lógica de captura.
          try
          {
-            HtmlWeb cliente = new HtmlWeb();
-            var htmlDoc = new HtmlAgilityPack.HtmlDocument();
-            htmlDoc = cliente.Load(url);
+            HtmlWeb client = new HtmlWeb();
+            var htmlDoc = new HtmlDocument();
+            htmlDoc = client.Load(url);
 
-            var pagina = htmlDoc.DocumentNode.SelectSingleNode("//div[@class='large-12 columns']/ul[@class='accordion']");
-            HtmlNode node = null;
+            var pagina = htmlDoc.DocumentNode.Descendants("li")
+            .Where(no => no.GetAttributeValue("class", "")
+            .Equals("accordion-navigation")).ToList();
 
-            foreach (var aux in pagina.SelectNodes("li[@class='accordion-navigation']"))
+            foreach (var aux in pagina)
             {
-               node = aux;
-               calenderMes = imprimeScrape(node, calenderMes);
+               calenderMes = PrintScrape(aux.Descendants("tr").ToList(), calenderMes, aux);
             }
             return calenderMes;
          }
          catch (Exception e)
-         {
-            
+         { 
             throw new Exception(e.Message);
          }
       }
-      //FIM metodo
+      //FIM METODO
 
       //Serviço de lógica de preenchimento das listas/Models
-      public List<CalenderMes> imprimeScrape(HtmlNode node, List<CalenderMes> calenderMes)
+      public List<Calender> PrintScrape(List<HtmlNode> node, List<Calender> calenderMes, HtmlNode noMes)
       {
-         int k = 0;
-         string[] strReg = new string[4];
-         foreach (var aux in node.Descendants("tbody"))
+         string strMes = noMes.Element("a").InnerHtml;
+         Calender Obj = null ;
+         for (int i = 1; i < node.Count; i++)
          {
-            string strMes = node.Element("a").InnerHtml;
-            foreach (var nodes in aux.Descendants("tr"))
+            var eventList = node[i].Descendants("td").ToList();
+            if (eventList.Count == 4)
             {
-               foreach (var nos in nodes.Descendants("td"))
-               {
-                  switch (k)
-                  {
-                     case 0:
-                        strReg[k] = WebUtility.HtmlDecode(nos.InnerText);
-                        break;
-                     case 1:
-                        strReg[k] = WebUtility.HtmlDecode(nos.InnerText);
-                        break;
-                     case 2:
-                        strReg[k] = WebUtility.HtmlDecode(nos.InnerText);
-                        break;
-                     case 3:
-                        strReg[k] = WebUtility.HtmlDecode(nos.InnerText);
-                        break;
-                  }
-                  k++;
-               }
-               var Obj = new CalenderMes(strMes, strReg[0], strReg[1], strReg[3]);
-               Obj.SJson = Obj.ToString();
-               calenderMes.Add(Obj);
-               k = 0;
+               HtmlNode[] htmlNodes = eventList.ToArray();
+               Obj = new Calender(strMes, htmlNodes);
             }
-
+            Obj.FormatJson = Obj.ToString();
+            calenderMes.Add(Obj);
          }
          return calenderMes;
       }
-      //FIM metodo
+      //FIM METODO
    }
 }
